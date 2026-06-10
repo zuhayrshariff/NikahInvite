@@ -1,0 +1,417 @@
+/* ── NIKAH INVITATION ── Midnight & Gold ── */
+
+:root {
+  --midnight: #0D1B2A;
+  --navy: #1A2F4A;
+  --gold: #C8A951;
+  --gold-light: #E8CC78;
+  --gold-pale: #F5E8B0;
+  --ivory: #FAF6EF;
+  --cream: #F2EBD9;
+  --text-light: #E8D9B8;
+  --text-body: #2C1F0E;
+  --shadow-gold: rgba(200,169,81,.3);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Raleway', sans-serif;
+  background: var(--midnight);
+  color: var(--text-body);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+#petalCanvas {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.music-btn {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 1000;
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: var(--midnight);
+  color: var(--gold);
+  font-size: 20px; cursor: pointer;
+  box-shadow: 0 4px 16px var(--shadow-gold);
+  transition: all .3s;
+}
+.music-btn:hover, .music-btn.playing { background: var(--gold); color: var(--midnight); }
+
+/* ── ENVELOPE SCREEN ── */
+.envelope-screen {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center, #1A2F4A 0%, #0D1B2A 70%, #060D15 100%);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500;
+  transition: opacity .8s, visibility .8s;
+  overflow: hidden;
+}
+.envelope-screen.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.stars-bg {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(200,169,81,.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 10%, rgba(200,169,81,.6) 0%, transparent 100%),
+    radial-gradient(2px 2px at 80% 60%, rgba(200,169,81,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 80%, rgba(200,169,81,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 70%, rgba(200,169,81,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 20%, rgba(200,169,81,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 50%, rgba(200,169,81,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 40%, rgba(200,169,81,.5) 0%, transparent 100%);
+  background-size: 300px 300px, 400px 400px, 250px 250px, 350px 350px, 280px 280px, 320px 320px, 200px 200px, 260px 260px;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from { opacity: .6; } to { opacity: 1; } }
+
+.geometric-ring {
+  position: absolute;
+  width: 200px; height: 200px;
+  border: 1px solid rgba(200,169,81,.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  animation: spin-slow 20s linear infinite;
+}
+.inner-ring {
+  position: absolute;
+  width: 160px; height: 160px;
+  border: 1px dashed rgba(200,169,81,.2);
+  border-radius: 50%;
+  animation: spin-slow 12s linear infinite reverse;
+}
+.crescent {
+  position: absolute; top: -18px;
+  font-size: 32px; color: var(--gold);
+  text-shadow: 0 0 20px rgba(200,169,81,.8);
+}
+@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.env-wrapper { display: flex; flex-direction: column; align-items: center; gap: 28px; z-index: 1; }
+
+.envelope {
+  position: relative; width: 280px; height: 200px;
+  cursor: pointer;
+  filter: drop-shadow(0 20px 40px rgba(200,169,81,.4));
+}
+.env-body {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #1E3550, #0D2240);
+  border-radius: 4px;
+  border: 1px solid var(--gold);
+}
+.env-body::before {
+  content: '';
+  position: absolute; inset: 6px;
+  border: 1px solid rgba(200,169,81,.3);
+  border-radius: 2px;
+}
+.env-flap {
+  position: absolute; top: 0; left: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 100px 140px 0 140px;
+  border-color: #16395E transparent transparent transparent;
+  transform-origin: top center;
+  transition: transform .8s cubic-bezier(.25,.46,.45,.94);
+  z-index: 2;
+}
+.env-flap.open { transform: rotateX(180deg); }
+
+.env-seal {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  transition: opacity .4s, transform .4s;
+  background: var(--gold);
+  border-radius: 50%;
+  width: 60px; height: 60px;
+  display: flex; align-items: center; justify-content: center;
+}
+.env-seal.hidden { opacity: 0; transform: translate(-50%,-50%) scale(0); }
+.seal-text {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 9px; color: var(--midnight);
+  text-align: center; line-height: 1.4; direction: rtl;
+}
+
+.tap-hint {
+  font-family: 'Cinzel', serif;
+  font-size: 12px; color: var(--gold-pale);
+  letter-spacing: 4px; text-transform: uppercase;
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+
+/* ── CARD SCREEN ── */
+.card-screen {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 50%, #EDE3CE 100%);
+  padding: 0 0 60px;
+}
+.card-screen.hidden { display: none; }
+
+/* ── BISMILLAH ── */
+.bismillah-banner {
+  background: var(--midnight);
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
+}
+.bismillah-banner::before, .bismillah-banner::after {
+  content: '✦ ✦ ✦';
+  display: block; font-size: 10px;
+  color: var(--gold); letter-spacing: 8px;
+  margin: 4px 0;
+}
+.bismillah {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: clamp(18px, 5vw, 26px);
+  color: var(--gold-light);
+  direction: rtl;
+  line-height: 1.8;
+  text-shadow: 0 0 20px rgba(200,169,81,.5);
+}
+
+/* ── HEADER ── */
+.card-header {
+  text-align: center; padding: 48px 24px 32px;
+  position: relative;
+}
+.you-are-invited {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300; font-size: 12px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+.ornament { color: var(--gold); font-size: 12px; letter-spacing: 8px; margin-bottom: 16px; }
+.event-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(40px, 12vw, 70px);
+  color: var(--midnight);
+  letter-spacing: 4px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.event-sub {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: clamp(24px, 7vw, 40px);
+  color: var(--gold);
+  direction: rtl;
+  margin-top: 8px;
+}
+
+/* ── COUPLE ── */
+.couple-section {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  padding: 32px 24px;
+  background: var(--midnight);
+  margin: 0 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(200,169,81,.3);
+  position: relative;
+}
+.couple-section::before {
+  content: '';
+  position: absolute; inset: 3px;
+  border: 1px dashed rgba(200,169,81,.15);
+  border-radius: 17px;
+  pointer-events: none;
+}
+
+.name-block { text-align: center; padding: 16px 0; }
+.role-label {
+  font-size: 10px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold);
+  display: block; margin-bottom: 8px;
+}
+.name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 8vw, 44px);
+  font-style: italic; line-height: 1.2;
+}
+.bride-name { color: var(--gold-light); }
+.groom-name { color: var(--gold-light); }
+.family-line { font-size: 12px; color: rgba(232,211,120,.6); margin-top: 6px; font-weight: 300; }
+
+.amp-wrap {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px; padding: 8px 0;
+}
+.amp {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; color: var(--gold);
+  opacity: .8;
+}
+.amp-line {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ── DETAILS ── */
+.details-section {
+  padding: 32px 24px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.detail-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(200,169,81,.15);
+}
+.detail-icon { font-size: 22px; flex-shrink: 0; width: 32px; text-align: center; }
+.d-label {
+  font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 4px;
+}
+.d-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--midnight);
+}
+.divider-dots {
+  text-align: center; color: var(--gold); letter-spacing: 8px;
+  font-size: 10px; padding: 4px;
+}
+
+/* ── QURAN ── */
+.quran-section { padding: 8px 24px 24px; }
+.quran-card {
+  background: var(--midnight);
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px solid rgba(200,169,81,.3);
+  position: relative;
+  overflow: hidden;
+}
+.quran-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(200,169,81,.05) 0%, transparent 70%);
+}
+.quran-arabic {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: clamp(16px, 4.5vw, 22px);
+  color: var(--gold-light);
+  direction: rtl;
+  line-height: 2.2;
+  margin-bottom: 12px;
+}
+.quran-translation {
+  font-size: 13px; color: rgba(232,211,120,.8);
+  font-style: italic; line-height: 1.7;
+  margin-bottom: 8px;
+}
+.quran-ref { font-size: 11px; color: var(--gold); letter-spacing: 2px; }
+
+/* ── MESSAGE ── */
+.message-section {
+  padding: 8px 24px 24px;
+  text-align: center;
+}
+.msg-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 4.5vw, 20px);
+  line-height: 1.9; color: var(--text-body);
+  font-style: italic;
+  position: relative; padding: 0 8px;
+}
+
+/* ── SCHEDULE ── */
+.schedule-section { padding: 8px 24px 24px; }
+.section-heading {
+  text-align: center; margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.section-heading::before, .section-heading::after {
+  content: '';
+  height: 1px; width: 40px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.section-heading::after { background: linear-gradient(90deg, var(--gold), transparent); }
+.section-heading span {
+  font-family: 'Cinzel', serif;
+  font-size: 16px; letter-spacing: 3px;
+  color: var(--midnight); text-transform: uppercase;
+}
+
+.schedule-list { display: flex; flex-direction: column; }
+.sched-item {
+  display: grid; grid-template-columns: 90px 40px 1fr;
+  align-items: center; padding: 12px 0;
+}
+.sched-left { text-align: right; }
+.sched-time {
+  font-size: 12px; font-weight: 600;
+  color: var(--gold); letter-spacing: 1px;
+}
+.sched-line {
+  display: flex; flex-direction: column;
+  align-items: center; position: relative;
+}
+.sched-line::before {
+  content: '';
+  position: absolute; top: -12px; bottom: -12px;
+  width: 1px; background: rgba(200,169,81,.2);
+}
+.sched-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold); z-index: 1;
+  box-shadow: 0 0 8px var(--gold);
+}
+.sched-event { font-size: 14px; color: var(--text-body); }
+
+/* ── CTA ── */
+.cta-section { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.btn {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 16px 24px; border-radius: 50px;
+  font-size: 15px; font-weight: 600; text-decoration: none;
+  letter-spacing: .5px; transition: transform .2s, box-shadow .2s;
+}
+.maps-btn {
+  background: linear-gradient(135deg, var(--gold), #A8882A);
+  color: var(--midnight);
+  box-shadow: 0 8px 24px rgba(200,169,81,.4);
+}
+.maps-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,169,81,.5); }
+.rsvp-btn {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(37,211,102,.3);
+}
+.rsvp-btn:hover { transform: translateY(-2px); }
+
+/* ── FOOTER ── */
+.card-footer {
+  text-align: center; padding: 24px;
+  background: var(--midnight);
+  margin: 0 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(200,169,81,.2);
+}
+.footer-ornament { font-size: 20px; color: var(--gold); margin-bottom: 8px; }
+.card-footer p { font-size: 14px; color: var(--gold-pale); line-height: 2; }
+.footer-families { letter-spacing: 2px; font-size: 12px; }
+.footer-dua {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 18px; color: var(--gold);
+  direction: rtl; margin-top: 8px;
+}
+
+/* ── FADE ── */
+.fade-up {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 400px) {
+  .couple-section { margin: 0 12px; padding: 24px 16px; }
+  .sched-item { grid-template-columns: 80px 32px 1fr; }
+}

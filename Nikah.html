@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nikah — Omair &amp; Suha</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Noto+Nastaliq+Urdu&family=Raleway:wght@300;400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <canvas id="petalCanvas"></canvas>
+  <button class="music-btn" id="musicBtn" aria-label="Play music">♪</button>
+  <audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg" />
+</audio>
+
+  <!-- Envelope -->
+  <div class="envelope-screen" id="envelopeScreen">
+    <div class="stars-bg"></div>
+    <div class="env-wrapper" id="envWrapper">
+      <div class="geometric-ring">
+        <div class="inner-ring"></div>
+        <span class="crescent">☽</span>
+      </div>
+      <div class="envelope" id="envelope">
+        <div class="env-body"></div>
+        <div class="env-flap" id="envFlap"></div>
+        <div class="env-seal" id="envSeal"><span class="seal-text">بِسْمِ اللَّٰهِ</span></div>
+      </div>
+      <p class="tap-hint" id="tapHint">Tap to open</p>
+    </div>
+  </div>
+
+  <!-- Card -->
+  <main class="card-screen hidden" id="cardScreen">
+
+    <!-- Bismillah Banner -->
+    <div class="bismillah-banner fade-up">
+      <p class="bismillah">بِسْمِ اللَّٰهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+    </div>
+
+    <header class="card-header">
+      <p class="you-are-invited fade-up">— With the Blessings of Allah —</p>
+      <div class="ornament fade-up">✦ ✦ ✦</div>
+      <h1 class="event-title fade-up"> Nikah</h1>
+      <p class="event-sub fade-up">نکاح</p>
+    </header>
+
+    <section class="couple-section fade-up">
+      <div class="name-block">
+          <span class="role-label">Groom</span>
+        <h2 class="name groom-name">Omair Nazir Shariff</h2>
+        <p class="family-line">Son of Nawaz Ahmed Shariff &amp; Family</p>
+      </div>
+      <div class="amp-wrap">
+        <span class="amp">&amp;</span>
+        <div class="amp-line"></div>
+      </div>
+      <div class="name-block">
+        <span class="role-label">Bride</span>
+        <h2 class="name bride-name">Suha Ayesha</h2>
+        <p class="family-line">Daughter of Khalid &amp; Family</p>
+      </div>
+    </section>
+
+    <section class="details-section fade-up">
+      <div class="detail-row">
+        <div class="detail-icon">📅</div>
+        <div>
+          <p class="d-label">Date</p>
+          <p class="d-value">Saturday, 11 July 2026</p>
+        </div>
+      </div>
+      <div class="divider-dots">· · ·</div>
+      <div class="detail-row">
+        <div class="detail-icon">⏰</div>
+        <div>
+          <p class="d-label">Time of Nikah</p>
+          <p class="d-value">After Magrib Prayer</p>
+        </div>
+      </div>
+      <div class="divider-dots">· · ·</div>
+      <div class="detail-row">
+        <div class="detail-icon">📍</div>
+        <div>
+          <p class="d-label">Venue</p>
+          <p class="d-value">CMA Royal, Bengaluru</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="quran-section fade-up">
+      <div class="quran-card">
+        <p class="quran-arabic">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا</p>
+        <p class="quran-translation">"And of His signs is that He created for you from yourselves mates."</p>
+        <p class="quran-ref">— Surah Ar-Rum 30:21</p>
+      </div>
+    </section>
+
+    <section class="message-section fade-up">
+      <p class="msg-text">
+        We joyfully invite you to witness the sacred union of Suha Ayesha and Omair Nazir Shariff as they begin their journey together, hand in hand, in the name of Allah.
+      </p>
+    </section>
+
+    <section class="schedule-section fade-up">
+      <h3 class="section-heading"><span>Event Schedule</span></h3>
+      <div class="schedule-list">
+        <div class="sched-item">
+          <div class="sched-left">
+            <span class="sched-time">7:30 PM</span>
+          </div>
+          <div class="sched-line"><div class="sched-dot"></div></div>
+          <div class="sched-right">
+            <span class="sched-event">Guest Arrival</span>
+          </div>
+        </div>
+        <div class="sched-item">
+          <div class="sched-left"><span class="sched-time">8:00 PM</span></div>
+          <div class="sched-line"><div class="sched-dot"></div></div>
+          <div class="sched-right"><span class="sched-event">Nikah Ceremony</span></div>
+        </div>
+        <div class="sched-item">
+          <div class="sched-left"><span class="sched-time">9:00 PM</span></div>
+          <div class="sched-line"><div class="sched-dot"></div></div>
+          <div class="sched-right"><span class="sched-event">Dua &amp; Blessings</span></div>
+        </div>
+        <div class="sched-item">
+          <div class="sched-left"><span class="sched-time">9:30 PM onwards</span></div>
+          <div class="sched-line"><div class="sched-dot"></div></div>
+          <div class="sched-right"><span class="sched-event">Reception &amp; Dinner</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section fade-up">
+      <a class="btn maps-btn" href="https://maps.google.com/?q=CMA+Royal+Bengaluru" target="_blank">
+        <span>📍</span> View on Google Maps
+      </a>
+      <a class="btn rsvp-btn" href="https://wa.me/919108405996?text=Assalamualaikum!%20We%20will%20be%20attending%20the%20Nikah%20of%20Suha%20%26%20Omair%20InshAllah%20%F0%9F%A4%8D" target="_blank">
+        <span>💬</span> Reply With WhatsApp
+      </a>
+    </section>
+
+    <footer class="card-footer fade-up">
+      <div class="footer-ornament">✦</div>
+      <p>With endless duas &amp; love</p>
+      <p class="footer-families">Both Families</p>
+      <p class="footer-dua">جزاك الله خيرا</p>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
